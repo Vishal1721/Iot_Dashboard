@@ -7,13 +7,13 @@ const UserModel = require("../../../models/userModel");
 const lastEmailSentTime = {};
 
 const sendSensorData = async (req, res) => {
-  // ✅ Validate params (MongoDB → string ObjectId)
+  // Validate params (MongoDB → string ObjectId)
   const paramsSchema = Joi.object({
     projectId: Joi.string().required(),
     sensorId: Joi.string().required(),
   });
 
-  // ✅ Validate body
+  // Validate body
   const bodySchema = Joi.object({
     value: Joi.number().required(),
   });
@@ -35,7 +35,7 @@ const sendSensorData = async (req, res) => {
   }
 
   try {
-    // ✅ Check project exists
+    // Check project exists
     const project = await ProjectModel.findProjectById(pVal.projectId);
     if (!project) {
       return res.status(404).json({
@@ -44,7 +44,7 @@ const sendSensorData = async (req, res) => {
       });
     }
 
-    // ✅ Check sensor exists
+    // Check sensor exists
     const sensor = await SensorModel.findSensorById(pVal.sensorId);
     if (!sensor) {
       return res.status(404).json({
@@ -53,7 +53,7 @@ const sendSensorData = async (req, res) => {
       });
     }
 
-    // ✅ Ensure sensor belongs to project 🔥
+    // Ensure sensor belongs to project
     if (sensor.project.toString() !== pVal.projectId) {
       return res.status(400).json({
         status: "error",
@@ -61,7 +61,7 @@ const sendSensorData = async (req, res) => {
       });
     }
 
-    // ✅ Store sensor data
+    // Store sensor data
     const sensorData = await SensorModel.createSensorData({
       sensor: pVal.sensorId,
       value: bVal.value,
