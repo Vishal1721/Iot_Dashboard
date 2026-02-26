@@ -1,5 +1,4 @@
-# Node modules
 node_modules/
-
-# Environment variables (VERY IMPORTANT 🚨)
 .env
+backend/node_modules/
+backend/.env

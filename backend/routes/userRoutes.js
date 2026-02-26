@@ -16,4 +16,5 @@ router.get("/users/profile", authenticateToken, getUser);
 router.patch("/users/profile", authenticateToken, updateUser);
 router.delete("/users/profile", authenticateToken, deleteUser);
 router.get("/users", authenticateToken, authorizeAdmin, getAllUsers);
+
 module.exports = router;

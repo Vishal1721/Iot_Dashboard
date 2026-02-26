@@ -2,7 +2,7 @@ const UserModel = require("../../models/userModel");
 
 const deleteUser = async (req, res) => {
   try {
-    // Delete logged-in user
+        
     const deletedUser = await UserModel.deleteUser(req.user.id);
 
     if (!deletedUser) {

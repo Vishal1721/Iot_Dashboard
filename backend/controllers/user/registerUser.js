@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
-const UserModel = require("../../models/userModel"); // ✅ class model
+const UserModel = require("../../models/userModel");
 const { generateToken } = require("../../utils/jwtUtils");
 
 const registerUser = async (req, res) => {
+
   const schema = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -24,7 +25,6 @@ const registerUser = async (req, res) => {
   }
 
   try {
-    
     const existingUser = await UserModel.findByEmailOrUsername(
       value.email,
       value.username,
@@ -37,17 +37,19 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // ✅ Hash password
+   
     const hashedPassword = await bcrypt.hash(value.password, 10);
 
-   
     const newUser = await UserModel.createUser({
       ...value,
       password: hashedPassword,
     });
 
     //  Generate JWT
-    const token = generateToken({ id: newUser._id });
+    const token = generateToken({
+      id: newUser._id,
+      email: newUser.email,
+    });
 
     return res.status(201).json({
       status: "success",
